@@ -1,38 +1,3 @@
-![MIKES DATA WORK GIT REPO](https://raw.githubusercontent.com/mikesdatawork/images/master/git_mikes_data_work_banner_01.png "Mikes Data Work")        
-
-# Create SQL Database Mirroring Email Alerts
-**Post Date: September 28, 2015**        
-
-
-
-## Contents    
-- [About Process](##About-Process)  
-- [SQL Logic](#SQL-Logic)  
-- [Author](#Author)  
-- [License](#License)       
-
-## About-Process
-
-<p>There are a number of ways to manually check, or manually configure some kind of alert method for Database Mirroring. The following is some SQL logic that will automatically configure SQL Database Mail AND send you an email alerts if your Database Mirroring status is anything but 'Synchronized'. 
-  
-  Here's what it does exactly.
-1. Checks if Database Mail has been configured.
-2. Configures Database Mail for you with a generic 'SQL Database Mail' profile.
-3. Sends an automatic test email message after database mail has been configured showing you the server name, and instance from where the message originated.
-4. Checks to see what databases have a status of anything other than 'Sychnorized'. 4. Creates a list of all databases that are not synchronized properly.
-5. Captures the time difference ( number of minutes, hours, days ) since last synch.
-6. Sends SMTP email with imbedded spreadsheet list formatted with HTML/CSS. This is NOT an attachment. This is directly in email.
-All you need to do is replace this (MySMTPServerName.MyDomain.com) with your SMTP server name, and the @recipients line near the bottom. Make sure to change the 'SQLJobAlerts@MyDomain.com' to your email or distribution group. (preferably a distribution group) Then just throw it in a Job. Thats it.
-
-Note:
-This only runs on Database Servers with Database configured as the Principal.
-This only reports the Databases that are presently configured with Database Mirroring, and those databases have fallen out of Synch.
-This is safe to deploy on all Database Servers that have databases configured for Mirroring regardless of role. Principal or Mirror. You can create a job with this logic on either one. If it's simply setup as the Mirror; the Job will not send email unless a single database becomes the Principal. I use this on ALL my Database Servers that have Mirroring configured.
-You're welcome :)</p>      
-
-
-## SQL-Logic
-```SQL
 use msdb;
 set nocount on
 set ansi_nulls on
@@ -356,20 +321,4 @@ if exists(select top 1 * from master.sys.database_mirroring where mirroring_role
  
 drop table #check_mirror_synch
 drop table #check_mirror_latency
-
-```
-
-[![WorksEveryTime](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://shitday.de/)
-
-## Author
-
-[![Gist](https://img.shields.io/badge/Gist-MikesDataWork-<COLOR>.svg)](https://gist.github.com/mikesdatawork)
-[![Twitter](https://img.shields.io/badge/Twitter-MikesDataWork-<COLOR>.svg)](https://twitter.com/mikesdatawork)
-[![Wordpress](https://img.shields.io/badge/Wordpress-MikesDataWork-<COLOR>.svg)](https://mikesdatawork.wordpress.com/)
-
-      
-## License
-[![LicenseCCSA](https://img.shields.io/badge/License-CreativeCommonsSA-<COLOR>.svg)](https://creativecommons.org/share-your-work/licensing-types-examples/)
-
-![Mikes Data Work](https://raw.githubusercontent.com/mikesdatawork/images/master/git_mikes_data_work_banner_02.png "Mikes Data Work")
 
